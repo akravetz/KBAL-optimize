@@ -25,7 +25,8 @@ Imports:
     Rcpp (>= 0.11.0),
     RcppParallel (>= 4.4.4),
     dplyr,
-    RSpectra
+    RSpectra,
+    gpuR
 LinkingTo: Rcpp, RcppParallel
 Maintainer: Chad Hazlett <chazlett@ucla.edu>
 RoxygenNote: 7.1.2

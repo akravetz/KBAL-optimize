@@ -149,21 +149,23 @@ eb <- function(
     print.level=print.level
 ) {
     
+    co.x.gpu <- gpuMatrix(co.x)
+    coefs.gpu <- gpuMatrix(coefs)
     converged <- FALSE
     for(iter in 1:max.iterations) {
-        weights.temp <-  c(exp(co.x %*% coefs))
+        weights.temp <-  c(exp(co.x.gpu %*% coefs.gpu))
         weights.ebal <- weights.temp *  base.weight
-        co.x.agg   <- c(weights.ebal %*% co.x)
+        co.x.agg   <- c(weights.ebal %*% co.x.gpu)
         gradient   <- co.x.agg - tr.total
         if(max(abs(gradient))<constraint.tolerance){
             converged <- TRUE
             break
         }
         if(print.level>=2){ cat("Iteration",iter,"maximum deviation is =",format(max(abs(gradient)),digits=4),"\n") }
-        hessian = t(co.x) %*% (weights.ebal * co.x)
-        Coefs <- coefs
-        newton <- solve(hessian,gradient)
-        coefs  <- coefs - newton
+        hessian = t(co.x.gpu) %*% (weights.ebal * co.x)
+        Coefs <- coefs.gpu
+        newton <- gpuR::solve(hessian,gradient)
+        coefs.gpu  <- coefs.gpu - newton
         loss.new <- line.searcher(Base.weight=base.weight,Co.x=co.x,Tr.total=tr.total,coefs=coefs,Newton=newton,ss=1)
         loss.old <- line.searcher(Base.weight=base.weight,Co.x=co.x,Tr.total=tr.total,coefs=Coefs,Newton=newton,ss=0)
         if(print.level>=3){cat("new loss",loss.new,"old loss=",loss.old,"\n")}
@@ -177,7 +179,7 @@ eb <- function(
                 
                 if(print.level>=3){cat("LS Step Length is ",ss.out$minimum,"\n")}
                 if(print.level>=3){cat("Loss is",ss.out$objective,"\n")}
-                coefs = Coefs - ss.out$minimum*solve(hessian,gradient)
+                coefs.gpu = Coefs - ss.out$minimum*solve(hessian,gradient)
             }
             
         }
@@ -188,7 +190,7 @@ eb <- function(
     return(
         list(
             maxdiff=max(abs(gradient)),
-            coefs=coefs,
+            coefs=coefs.gpu,
             Weights.ebal=weights.ebal,
             converged=converged
         )
