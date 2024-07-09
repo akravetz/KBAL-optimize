@@ -772,7 +772,7 @@ drop_multicollin <- function(allx, printprogress = TRUE) {
 #' # and upweights the non-white republicans and white non-republicans
 #' unique(round(cbind(samp[,-3], k_bal_weight = kbalout$w[sampled==1]),6))
 #' @export
-kbal = function(allx,
+kbal.opt = function(allx,
                 useasbases=NULL,
                 b=NULL,
                 sampled=NULL,
@@ -1347,7 +1347,7 @@ kbal = function(allx,
                 allx_mf = allx
             }
         }
-        kbalout.mean = suppressWarnings(kbal(allx=allx_mf,
+        kbalout.mean = suppressWarnings(kbal.opt(allx=allx_mf,
                            treatment=treatment,
                            sampled = sampled,
                            scale_data = TRUE,
@@ -1675,6 +1675,8 @@ kbal = function(allx,
         keepgoing=TRUE
         wayover=FALSE
         mindistsofar=998
+        # stop going if bias bound increases OR estimate diverges for 10 rounds
+        incr.or.diverge = 0
 
         while(keepgoing==TRUE) {
             U_try=U[,1:thisnumdims, drop=FALSE]
@@ -1706,9 +1708,17 @@ kbal = function(allx,
             thisnumdims=thisnumdims+incrementby
 
             if(!is.na(dist.now)) {
-                if(dist.now<mindistsofar){mindistsofar=dist.now}
+                if(dist.now<mindistsofar){
+                  mindistsofar=dist.now
+                }
+                if (dist.now > mindistsofar | !getw.out$converged) {
+                  incr.or.diverge = incr.or.diverge + 1
+                } else {
+                  incr.or.diverge = 0
+                }
+
                 wayover=(dist.now/mindistsofar)>1.25
-                keepgoing=(thisnumdims<=maxnumdims) & (wayover==FALSE) #& (dist.now<dist.orig)
+                keepgoing=(thisnumdims<=maxnumdims) & (wayover==FALSE) & (incr.or.diverge < 5) #& (dist.now<dist.orig)
                 #& dist.now!="error"
                 # (dist.now>mindistsofar)  # XXX this was in there, but needed?
                 # Need to work on "keepgoing" for case where ebal fails.
