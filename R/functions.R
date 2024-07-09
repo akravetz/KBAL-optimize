@@ -235,15 +235,14 @@ getw = function(target, observed, svd.U, ebal.tol=1e-6, ebal.maxit = 500){
   Xappended = rbind(svd.U,  svd.U[observed==1 & target==1, , drop=FALSE] )
   target_ebal = c(target, rep(0, sum(observed==1 & target==1)))
 
-    bal.out.pc=try(ebalance_custom(Treatment = target_ebal,
+    bal.out.pc=ebalance_custom(Treatment = target_ebal,
                                    X = Xappended,
                                    base.weight = NULL,
                                    norm.constant  = NULL,
                                    coefs = NULL ,
                                    max.iterations = ebal.maxit,
                                    constraint.tolerance = ebal.tol,
-                                   print.level=3),
-                   silent=FALSE)
+                                   print.level=3)
   N=nrow(svd.U)
   converged = FALSE
   #earlyfail = FALSE
