@@ -1,4 +1,4 @@
-Package: kbal-optimize
+Package: kbalOpt
 Type: Package
 Title: Kernel Balancing Optimized
 Version: 0.1

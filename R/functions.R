@@ -21,7 +21,7 @@
 #' #the large size of the data
 #' K = makeK(allx = lalonde[,xvars], useasbases = 1-lalonde$nsw)
 #' }
-#' @useDynLib kbal
+#' @useDynLib kbalOpt
 #' @importFrom stats sd
 #' @importFrom Rcpp sourceCpp
 #' @importFrom RcppParallel RcppParallelLibs

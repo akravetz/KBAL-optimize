@@ -2,14 +2,14 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 kernel_parallel <- function(X, b) {
-    .Call('_kbal_kernel_parallel', PACKAGE = 'kbal', X, b)
+    .Call('_kbal_kernel_parallel', PACKAGE = 'kbalOpt', X, b)
 }
 
 kernel_parallel_2 <- function(X, Y, b) {
-    .Call('_kbal_kernel_parallel_2', PACKAGE = 'kbal', X, Y, b)
+    .Call('_kbal_kernel_parallel_2', PACKAGE = 'kbalOpt', X, Y, b)
 }
 
 kernel_parallel_old <- function(X, Y, b) {
-    .Call('_kbal_kernel_parallel_old', PACKAGE = 'kbal', X, Y, b)
+    .Call('_kbal_kernel_parallel_old', PACKAGE = 'kbalOpt', X, Y, b)
 }
 
