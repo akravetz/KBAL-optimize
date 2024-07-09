@@ -243,7 +243,7 @@ getw = function(target, observed, svd.U, ebal.tol=1e-6, ebal.maxit = 500){
                                    max.iterations = ebal.maxit,
                                    constraint.tolerance = ebal.tol,
                                    print.level=3),
-                   silent=TRUE)
+                   silent=FALSE)
   N=nrow(svd.U)
   converged = FALSE
   #earlyfail = FALSE

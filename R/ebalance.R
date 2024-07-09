@@ -149,6 +149,7 @@ eb <- function(
     print.level=print.level
 ) {
     
+    cat('TEST')
     co.x.gpu <- gpuMatrix(co.x)
     coefs.gpu <- gpuMatrix(coefs)
     converged <- FALSE
