@@ -1718,7 +1718,7 @@ kbal.opt = function(allx,
                 }
 
                 wayover=(dist.now/mindistsofar)>1.25
-                keepgoing=(thisnumdims<=maxnumdims) & (wayover==FALSE) & (incr.or.diverge <= 15) #& (dist.now<dist.orig)
+                keepgoing=(thisnumdims<=maxnumdims) & (wayover==FALSE) & (incr.or.diverge <= 20) #& (dist.now<dist.orig)
                 #& dist.now!="error"
                 # (dist.now>mindistsofar)  # XXX this was in there, but needed?
                 # Need to work on "keepgoing" for case where ebal fails.
